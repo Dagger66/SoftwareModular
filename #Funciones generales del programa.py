@@ -27,14 +27,11 @@ class MenuClientes:
     def agregar_cliente():
 
         cliente = [{
-            "nombre" : str(input("Agregar nombre: ")),
-            "apellido" : str(input("Agregar apellido: ")),
-            "dni" : float(input("Agregar dni: ")),
-            "TEL" : float(input("Agregar telefono: ")),
-            "factura" : str(input("Requiere factura?: ")),
+            "nombreCompleto" : str(input("Nombre completo: ")),
+            "dni" : str(input("Agregar dni: ")),
+            "TEL" : str(input("Agregar telefono: ")),
             "empresa" : str(input("Empresa: ")),
-            "abona" : str(input("Abona: ")),
-            "observacion" : str(input("Observación: "))
+            "observacion" : str(input("Observación (Tipo de factura): ")),
         }
         ]
         lista_clientes.extend(cliente)
@@ -43,8 +40,8 @@ class MenuClientes:
     def mostrar_listado_clientes():
         limpiar_terminal()
         for i in lista_clientes:
-            print("-"*25)
-            print(f"{Back.BLUE} {i['apellido'].upper()} {i['nombre'].title()}{Style.RESET_ALL}", end="\n")
+            print("-"*50)
+            print(f"{Back.BLUE} {i['nombreCompleto'].upper()} /// Telefono: {i['TEL'].title()} /// Factura: {i['observacion'].title()}{Style.RESET_ALL}", end="\n")
 
     def mostrar_menú_clientes():
         limpiar_terminal()
