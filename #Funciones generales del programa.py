@@ -22,6 +22,8 @@ import json
 #Listados menú clientes
 registrar_reserva = []
 lista_clientes = []
+
+#Listados menú Hotel
 listado_de_habitaciones = []
 
 class MenuClientes:
@@ -52,45 +54,48 @@ class MenuClientes:
             return False
 
     def registrar_reserva():
-    # En caso de que el dni no coincida con uno registrado, deberá mostrar el mensaje de El cliente no cuenta con ficha, ¿desea crear una? S/N.
         dni = input("Buscar ficha por DNI: ")
-        for cliente in lista_clientes:
-            if dni == cliente.get("dni"):
+
+        encontrar_cliente = False
+        for client in lista_clientes:
+            if client["dni"] == dni:
+                encontrar_cliente = True
+                # Muestra la informacion del cliente
                 MenuClientes.mostrar_datos_cliente(dni)
-                habitacion = (input("Asignar habitacion: "))
-                (input("Numero de personas a ingresar: "))
-                (input("Observación: "))
+
+                #Procede a registrar la reserva
+                habitacion = input("Asignar habitación: ")
+                numero_personas = input("Número de personas a ingresar: ")
+                observacion = input("Observación: ")
                 print(f"Cargado con éxito en hab.{habitacion}")
                 limpiar_terminal(segundos=2)
+                break
+
+        if not encontrar_cliente:
+            # Si no encuentra ficha del cliente, pregunta si quieres crear una nueva.
+            crear_ficha = input(f"El cliente con DNI {dni} no tiene ficha creada. ¿Desea crear una? (S/N): ").upper()
+            if crear_ficha == "S":
+                #Llama a agregar cliente para crear una nueva ficha
+                MenuClientes.agregar_cliente()
             else:
-                respuesta = input("El cliente no cuenta con ficha, ¿desea crear una? S/N: ")
-                if respuesta.upper() == "S":  # Validate user input
-                    MenuClientes.agregar_cliente()
-                else:
-                    print("Registro de cliente cancelado.")  # Or take appropriate action
-                    limpiar_terminal()
-        #Si la reserva a registrar no tiene una ficha guardada, se debe pedir que se cree una, 
-        # luego podrá registrar la reserva. "EL CLIENTE NO CUENTA CON FICHA CREADA, CREAR UNA? SI/NO"
-        #En caso de que tenga ficha, antes de agendar la reserva deberá pedir que se revisen los datos 
-        # y que deje modificar si es necesario
-        #Si los datos con correctos registrar reserva es OK.
+                print("Volviendo al menú anterior...")
+                limpiar_terminal(segundos=1)
+                return  #Retorna al menú anterior
 
     def mostrar_listado_clientes():
         limpiar_terminal()
         for i in lista_clientes:
             print("-"*50)
-            print(f"{Back.BLUE} {i['nombreCompleto'].upper()} /// Telefono: {i['TEL'].title()} /// Factura: {i['observacion'].title()}{Style.RESET_ALL}", end="\n")
+            print(f"{Back.BLUE} {i['nombreCompleto'].upper()} /// Telefono: {i['TEL'].title()} /// Observación: {i['observacion'].title()}{Style.RESET_ALL} ///#Fecha de creacion de ficha", end="\n")
 
     def mostrar_menú_clientes():
         limpiar_terminal()
         "Para volver atrás puse Esc"
-        op = int(input(""" 
-        1-Registrar reserva.
-            #Buscar cliente. #para buscar por DNI
-                #DNI no registrado en sistema < volver atrás automaticamente
-        2-Agregar cliente nuevo. #Para que quede en una base de datos
-        3-Editar datos de cliente
-        4-Mostrar listado de clientes.
+        op = int(input("""
+        1-Registrar Reserva:
+        2-Agregar ficha clientes:
+        3-Editar datos de cliente:
+        4-Mostrar listado de clientes:
     """))
         match op:
             case 1:
